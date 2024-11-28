@@ -31,7 +31,7 @@ const deleteUsers = async (req, res)=>{
     } catch (error) {
         
     }
-}
+};
 
 const updateUsers = async (req, res) =>{
 
@@ -45,7 +45,7 @@ const updateUsers = async (req, res) =>{
         
     }
 
-}
+};
 
 const register = async(req,res)=>{
 try {
@@ -66,7 +66,7 @@ try {
 } catch (error) {
     
 }
-}
+};
 
 const login = async (req, res) => {
     try {
@@ -96,5 +96,21 @@ const login = async (req, res) => {
     } catch (error) {
         
     }
-}
-module.exports = {addUser, getUsers, updateUsers, deleteUsers, register, login};
+};
+
+const getProfile = async (req, res) => {
+   //busco en la BD la informacion que me interesa de ese usuario
+     const dataUser = await Users.find({email:req.user.email});
+    return res.json(dataUser);
+};
+
+const registerUpload = async (req, res) => {
+    const newUser = new Users(req.body);
+    if(req.file.path){
+        newUser.image = req.file.path;
+    }
+    const createdUser = await newUser.save();
+    return res.json(createdUser);
+};
+
+module.exports = {addUser, getUsers, updateUsers, deleteUsers, register, login, getProfile, registerUpload};
